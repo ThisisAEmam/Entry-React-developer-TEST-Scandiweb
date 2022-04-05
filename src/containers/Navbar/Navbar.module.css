@@ -19,6 +19,12 @@
 
 .logo {
   margin: 0 auto;
+  height: 2.2rem;
+}
+
+.logo img {
+  height: 100%;
+  width: 100%;
 }
 
 .rightSide {

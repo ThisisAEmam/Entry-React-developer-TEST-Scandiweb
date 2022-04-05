@@ -22,8 +22,6 @@ class MiniCart extends React.Component {
     this.state = {
       currency: { label: "", symbol: "" },
       show: false,
-      totalPrice: 0,
-      products: [],
     };
   }
 
@@ -46,7 +44,6 @@ class MiniCart extends React.Component {
 
   handleClickOutside = (event) => {
     if (
-      this.cartRef &&
       !this.cartRef.current.contains(event.target) &&
       !this.props.cartIconRef.current.contains(event.target)
     ) {
@@ -59,7 +56,6 @@ class MiniCart extends React.Component {
       this.setState({ ...this.state, products: this.props.products });
     }
     if (prevProps.currency !== this.props.currency) {
-      console.log(this.props.currency);
       this.setState({ ...this.state, currency: { ...this.props.currency } });
     }
   }

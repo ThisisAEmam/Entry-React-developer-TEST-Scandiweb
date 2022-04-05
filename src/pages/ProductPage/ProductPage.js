@@ -90,15 +90,23 @@ class ProductPage extends React.Component {
       });
     }
 
-    // if (prevProps.productsInCart !== this.props.productsInCart) {
-    //   if (
-    //     this.props.productsInCart.findIndex(
-    //       (obj) => obj.id === this.state.product.id
-    //     ) === -1
-    //   ) {
-    //     this.setState({ ...this.state, addedToCart: false });
-    //   }
-    // }
+    if (prevProps.productsInCart !== this.props.productsInCart) {
+      const idx = this.props.productsInCart.findIndex(
+        (obj) => obj.id === this.state.product.id
+      );
+      if (idx === -1) {
+        const notSelectedAttr = {};
+        this.state.product.attributes.forEach((attr) => {
+          notSelectedAttr[attr.id] = false;
+        });
+        this.setState({
+          ...this.state,
+          addedToCart: false,
+          selectedAttr: {},
+          notSelectedAttr: { ...notSelectedAttr },
+        });
+      }
+    }
   }
 
   componentWillUnmount() {
