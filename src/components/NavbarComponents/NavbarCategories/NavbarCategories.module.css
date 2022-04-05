@@ -1,0 +1,44 @@
+.NavbarCategories {
+  display: flex;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.category {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1rem;
+  padding: 0 1rem;
+  color: var(--c-text);
+  font-size: 1.2rem;
+  font-weight: 500;
+  position: relative;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.category:first-child {
+  margin-left: 0;
+}
+
+.category .borderBottom {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: var(--c-primary);
+  display: none;
+}
+
+.category.selected {
+  font-weight: 600;
+  color: var(--c-primary);
+}
+
+.category.selected .borderBottom {
+  display: block;
+}

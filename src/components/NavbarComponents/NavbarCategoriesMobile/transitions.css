@@ -1,0 +1,17 @@
+.cat-menu-transition-enter {
+  transform: translateX(-100%);
+}
+
+.cat-menu-transition-enter-active {
+  transform: translateX(0%);
+  transition: all 0.25s linear;
+}
+
+.cat-menu-transition-exit {
+  transform: translateX(0);
+}
+
+.cat-menu-transition-exit-active {
+  transform: translateX(-100%);
+  transition: all 0.25s linear;
+}

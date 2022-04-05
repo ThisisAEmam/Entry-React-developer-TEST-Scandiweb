@@ -1,0 +1,18 @@
+.hover-transition-enter {
+  opacity: 0;
+  pointer-events: none;
+}
+.hover-transition-enter-active {
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+}
+.hover-transition-exit {
+  opacity: 1;
+  pointer-events: all;
+}
+.hover-transition-exit-active {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+}

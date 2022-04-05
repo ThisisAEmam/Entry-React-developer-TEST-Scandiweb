@@ -1,0 +1,21 @@
+.categories-transition-enter span {
+  opacity: 0;
+  transform: translateX(-30%);
+}
+
+.categories-transition-enter-active span {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: all 0.5s ease;
+}
+
+.categories-transition-exit span {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.categories-transition-exit-active span {
+  opacity: 0;
+  transform: translateX(30%);
+  transition: all 0.5s ease;
+}

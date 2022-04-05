@@ -1,0 +1,59 @@
+.CurrenciesDropMenu {
+  cursor: pointer;
+  height: 100%;
+  user-select: none;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  height: 100%;
+  font-size: 1.2rem;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.header:hover {
+  opacity: 0.7;
+}
+
+.arrowIcon {
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.menu {
+  position: fixed;
+  right: 12%;
+  top: 5rem;
+  background-color: #fff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.12);
+  z-index: 90;
+}
+
+.currencyContainer {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  column-gap: 0.5rem;
+  padding: 0.5rem 2.5rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.currencyContainer:hover {
+  background-color: var(--c-primary);
+  color: #fff;
+}
+
+.currencyContainer .symbol {
+  width: 100%;
+}
+
+.currencyContainer .label {
+  width: 100%;
+}

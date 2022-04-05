@@ -1,0 +1,35 @@
+.ProductsListContainer {
+  padding-top: 5rem;
+  padding-bottom: 10rem;
+}
+
+.categoryName {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 6rem;
+  text-transform: capitalize;
+}
+
+.ProductsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 3rem;
+  column-gap: 3rem;
+}
+
+@media only screen and (max-width: 480px) {
+  .ProductsListContainer {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .categoryName {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .ProductsList {
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+    column-gap: 3rem;
+  }
+}

@@ -1,0 +1,33 @@
+.cartIcon {
+  margin-left: 1.5rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  position: relative;
+  z-index: 20;
+}
+
+.cartIcon:hover {
+  opacity: 0.8;
+}
+
+.numProductsPopup {
+  position: absolute;
+  right: -50%;
+  top: -40%;
+  z-index: 21;
+  background-color: var(--c-black);
+  color: var(--c-white);
+  font-size: 1rem;
+  font-weight: 600;
+  width: 1.3rem;
+  height: 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.numProductsPopup p {
+  margin-top: -0.1rem;
+}

@@ -1,0 +1,56 @@
+.NavbarCategoriesMobile {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 110;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70vw;
+  height: 100%;
+  z-index: 120;
+  background-color: white;
+  padding: 3rem 0;
+}
+
+.title {
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--c-out-stock);
+  padding: 0 1rem;
+}
+
+.categoriesList {
+  margin-top: 2rem;
+}
+
+.category {
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.category.selected {
+  background-color: var(--c-primary);
+  color: var(--c-white);
+}
+
+.category:hover {
+  filter: brightness(0.9);
+}
