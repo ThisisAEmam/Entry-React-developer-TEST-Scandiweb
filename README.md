@@ -9,7 +9,7 @@
 1. Clone this repository into your local machine:
 
    ```console
-   git clone https://github.com/ThisisAEmam/Entry-React-developer-TEST-Scandiweb.git
+   git clone https://github.com/ThisisAEmam/Entry-React-developer-TEST-Scandiweb.git react-app && cd react-app
    ```
 
 2. Install the packages/dependancies specified in the **_package.json_** file:
