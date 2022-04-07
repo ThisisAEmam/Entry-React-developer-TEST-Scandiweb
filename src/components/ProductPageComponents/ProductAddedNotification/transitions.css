@@ -1,0 +1,22 @@
+.notification-transition-enter {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+}
+.notification-transition-enter-active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+  transition: all 0.5s ease;
+}
+.notification-transition-exit {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+.notification-transition-exit-active {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition: all 0.5s ease;
+}

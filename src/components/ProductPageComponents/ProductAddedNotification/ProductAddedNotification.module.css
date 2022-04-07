@@ -1,0 +1,72 @@
+.ProductAddedNotification {
+  position: fixed;
+  bottom: 3rem;
+  right: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--c-primary);
+  z-index: 120;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border-radius: 3px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.text {
+  font-size: 1.3rem;
+  color: var(--c-white);
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.xIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 2rem;
+  font-size: 1.8rem;
+  color: var(--c-white);
+  cursor: pointer;
+}
+
+.progressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 0.25rem;
+  width: 100%;
+  transform: translateX(-100%);
+  background-color: #eee;
+}
+
+.progressBar.animate {
+  animation: progressbar 3s 0.3s forwards;
+}
+
+.progressBar:not(.animate) {
+  animation: none;
+}
+
+@keyframes progressbar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .ProductAddedNotification {
+    bottom: 3rem;
+    right: 0.5rem;
+    width: 80vw;
+  }
+
+  .text {
+    font-size: 1.1rem;
+  }
+}

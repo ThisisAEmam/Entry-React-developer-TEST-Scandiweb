@@ -3,9 +3,7 @@
   display: grid;
   grid-template-columns: 6fr 1fr 3fr;
   column-gap: 0.75rem;
-  height: 13rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
+  padding: 2rem 0;
   border-bottom: 2px solid #f0f0f0;
   outline: none;
 }
@@ -49,7 +47,7 @@
 }
 
 .inCartPage .leftSide .price {
-  margin: 2rem 0;
+  margin-top: 2rem;
   font-weight: 700;
   font-size: 1.5rem;
 }
@@ -57,6 +55,14 @@
 .leftSide .price {
   margin-top: 1rem;
   font-weight: 500;
+}
+
+.leftSide .attributeContainer {
+  margin-bottom: 1rem;
+}
+
+.leftSide .attributeContainer:last-of-type {
+  margin-bottom: 0rem;
 }
 
 .leftSide .attrContainer {
@@ -76,18 +82,34 @@
   margin-bottom: 0;
 }
 
+.leftSide .attributeName {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.inCartPage .leftSide .attributeName {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 .leftSide .attrContainer .attributeValue {
   width: 100%;
   padding: 0.3rem 0;
-  border: 2px solid #a6a6a6;
-  color: #a6a6a6;
-  background-color: #ededed;
+  border: 2px solid var(--c-black);
+  color: var(--c-black);
+  background-color: var(--c-white);
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.1rem;
   font-weight: 500;
-  cursor: default;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.leftSide .attrContainer .attributeValue:hover {
+  opacity: 0.75;
 }
 
 .leftSide .attrContainer .attributeValue.selectedAttrValue {
@@ -115,6 +137,10 @@
 .inCartPage .leftSide .attrContainer .attributeValue {
   width: 7rem;
   padding: 0.75rem 0;
+}
+
+.leftSide .attributesContainer {
+  margin-top: 2rem;
 }
 
 .middleSide {
@@ -166,17 +192,58 @@
 
 .rightSide img {
   width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .inCartPage .rightSide {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  user-select: none;
 }
 
 .inCartPage .rightSide img {
+  width: 100%;
   height: 100%;
-  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.inCartPage .rightSide .imgArrow {
+  position: absolute;
+  font-size: 2.5rem;
+  color: #fff;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.inCartPage .rightSide .imgArrow.backArrow {
+  left: 0;
+  width: 25%;
+  transition: all 0.3s ease;
+}
+
+.inCartPage .rightSide .imgArrow.forwardArrow {
+  width: 25%;
+  left: calc(100% - 25%);
+  transition: all 0.3s ease;
+}
+
+/* .inCartPage .rightSide:hover .imgArrow {
+  background: #000;
+} */
+
+.inCartPage .rightSide .imgArrow.backArrow:hover {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 20%, transparent);
+}
+
+.inCartPage .rightSide .imgArrow.forwardArrow:hover {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.2) 20%, transparent);
 }
 
 @media only screen and (max-width: 480px) {

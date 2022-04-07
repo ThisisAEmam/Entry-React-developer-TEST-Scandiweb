@@ -1,6 +1,7 @@
 .ProductGallery {
   width: 100%;
   position: relative;
+  user-select: none;
 }
 
 .imagesContainer {

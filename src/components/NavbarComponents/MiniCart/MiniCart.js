@@ -44,8 +44,9 @@ class MiniCart extends React.Component {
 
   handleClickOutside = (event) => {
     if (
-      !this.cartRef.current.contains(event.target) &&
-      !this.props.cartIconRef.current.contains(event.target)
+      // !this.cartRef.current.contains(event.target) &&
+      // !this.props.cartIconRef.current.contains(event.target)
+      this.overlayRef.current.contains(event.target)
     ) {
       this.closeMiniCart();
     }
@@ -59,6 +60,14 @@ class MiniCart extends React.Component {
       this.setState({ ...this.state, currency: { ...this.props.currency } });
     }
   }
+
+  calcNumProductInBag = () => {
+    let totalNum = 0;
+    this.props.products.forEach((product) => {
+      totalNum += product.amount;
+    });
+    return totalNum;
+  };
 
   calcTotalPrice = () => {
     let totalPrice = 0;
@@ -77,7 +86,7 @@ class MiniCart extends React.Component {
     this.setState({ ...this.state, show: false });
     setTimeout(() => {
       this.props.closeMiniCart();
-    }, 350);
+    }, 450);
   };
 
   render() {
@@ -92,7 +101,7 @@ class MiniCart extends React.Component {
             <div className={classes.header}>
               <p className={classes.title}>
                 <span>My Bag, </span>
-                {this.props.products.length}{" "}
+                {this.calcNumProductInBag()}{" "}
                 {this.props.products.length === 1 ? "item" : "items"}
               </p>
               <div className={classes.xIcon} onClick={this.closeMiniCart}>
@@ -105,28 +114,30 @@ class MiniCart extends React.Component {
                   {this.props.products.map((product) => (
                     <ProductInCart
                       product={product}
-                      key={product.id}
+                      key={product.cartId}
                       setCurrency={(c) => {}}
                     />
                   ))}
                 </div>
-                <div className={classes.totalPrice}>
-                  <p>Total</p>
-                  <p>
-                    {this.state.currency.symbol}
-                    {this.calcTotalPrice()}
-                  </p>
-                </div>
-                <div className={classes.btnsContainer}>
-                  <Link to="/cart" onClick={this.props.closeMiniCart}>
-                    <button className={classes.viewBagBtn}>View Bag</button>
-                  </Link>
-                  <button
-                    className={classes.checkoutBtn}
-                    onClick={this.props.closeMiniCart}
-                  >
-                    Check out
-                  </button>
+                <div className={classes.footer}>
+                  <div className={classes.totalPrice}>
+                    <p>Total</p>
+                    <p>
+                      {this.state.currency.symbol}
+                      {this.calcTotalPrice()}
+                    </p>
+                  </div>
+                  <div className={classes.btnsContainer}>
+                    <Link to="/cart" onClick={this.props.closeMiniCart}>
+                      <button className={classes.viewBagBtn}>View Bag</button>
+                    </Link>
+                    <button
+                      className={classes.checkoutBtn}
+                      onClick={this.props.closeMiniCart}
+                    >
+                      Check out
+                    </button>
+                  </div>
                 </div>
               </>
             ) : (

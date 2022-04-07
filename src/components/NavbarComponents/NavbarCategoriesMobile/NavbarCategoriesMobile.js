@@ -4,6 +4,7 @@ import classes from "./NavbarCategoriesMobile.module.css";
 import { setSelectedCategory } from "../../../features/categoriesSlice";
 import { CSSTransition } from "react-transition-group";
 import "./transitions.css";
+import withRouter from "../../../hoc/withRouter/withRouter";
 
 const mapStateToProps = (state) => {
   return {
@@ -64,6 +65,10 @@ class NavbarCategoriesMobile extends React.Component {
   clickHandler = (category) => {
     this.setState({ ...this.state, selected: category });
     this.props.setSelectedCategory(category);
+    const { pathname } = this.props.location;
+    if (pathname !== "/") {
+      this.props.navigate("/");
+    }
     this.closeHandler();
   };
 
@@ -75,7 +80,6 @@ class NavbarCategoriesMobile extends React.Component {
   };
 
   render() {
-    console.log(this.state.show);
     return (
       <div
         className={classes.NavbarCategoriesMobile}
@@ -114,4 +118,4 @@ class NavbarCategoriesMobile extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavbarCategoriesMobile);
+)(withRouter(NavbarCategoriesMobile));

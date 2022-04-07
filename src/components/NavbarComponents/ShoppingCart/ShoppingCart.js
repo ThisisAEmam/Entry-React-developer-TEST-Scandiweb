@@ -23,28 +23,35 @@ class ShoppingCart extends React.Component {
     this.iconRef = React.createRef();
   }
 
+  setNumProducts = () => {
+    let totalNum = 0;
+    this.props.products.forEach((product) => {
+      totalNum += product.amount;
+    });
+    this.setState({
+      ...this.state,
+      productLength: totalNum,
+    });
+  };
+
   componentDidMount() {
     if (Object.keys(this.props.products).length !== 0) {
-      this.setState({
-        ...this.state,
-        productLength: this.props.products.length,
-      });
+      this.setNumProducts();
     }
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.products !== this.props.products) {
-      this.setState({
-        ...this.state,
-        productLength: this.props.products.length,
-      });
+      this.setNumProducts();
     }
   }
 
   clickHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ ...this.state, showOverlay: !this.state.showOverlay });
+    if (!this.state.showOverlay) {
+      this.setState({ ...this.state, showOverlay: true });
+    }
   };
 
   hideOverlayHandler = () => {

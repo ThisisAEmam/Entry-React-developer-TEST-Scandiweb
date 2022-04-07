@@ -1,10 +1,12 @@
 import React from "react";
 import classes from "./ProductInCart.module.css";
 import { IoAdd, IoRemoveOutline } from "react-icons/io5";
+import { TiChevronLeft, TiChevronRight } from "react-icons/ti";
 import { connect } from "react-redux";
 import {
   addOneToProduct,
   subtractOneFromProduct,
+  modifyProductInCart,
 } from "../../../features/productsInCartSlice";
 import { isMobile } from "react-device-detect";
 
@@ -17,6 +19,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   addOneToProduct,
   subtractOneFromProduct,
+  modifyProductInCart,
 };
 
 class ProductInCart extends React.Component {
@@ -25,6 +28,7 @@ class ProductInCart extends React.Component {
     this.state = {
       currency: { label: "", symbol: "" },
       totalPrice: 0,
+      imageIdx: 0,
     };
   }
 
@@ -34,7 +38,7 @@ class ProductInCart extends React.Component {
     );
 
     if (price.length > 0) {
-      const totalPrice = price[0].amount * this.props.product.amount;
+      const totalPrice = price[0].amount;
       this.setState({
         ...this.state,
         totalPrice: totalPrice,
@@ -67,18 +71,20 @@ class ProductInCart extends React.Component {
 
   renderAttributes = () => {
     return this.props.product.attributes.map((attr) => (
-      <div
-        key={attr.id}
-        className={classes.attrContainer}
-        style={
-          isMobile
-            ? { gridTemplateColumns: "1fr 1fr 1fr" }
-            : {
-                gridTemplateColumns: "1fr ".repeat(attr.items.length),
-              }
-        }
-      >
-        {this.retAttributesValues(attr)}
+      <div key={attr.id} className={classes.attributeContainer}>
+        <h3 className={classes.attributeName}>{attr.name}:</h3>
+        <div
+          className={classes.attrContainer}
+          style={
+            isMobile
+              ? { gridTemplateColumns: "1fr 1fr 1fr" }
+              : {
+                  gridTemplateColumns: "1fr ".repeat(attr.items.length),
+                }
+          }
+        >
+          {this.retAttributesValues(attr)}
+        </div>
       </div>
     ));
   };
@@ -94,6 +100,7 @@ class ProductInCart extends React.Component {
                 classes.selectedAttrValue,
             ].join(" ")}
             key={item.id}
+            onClick={() => this.attributeValueSelect(id, item.id)}
           >
             {item.value}
           </p>
@@ -111,10 +118,40 @@ class ProductInCart extends React.Component {
             ].join(" ")}
             style={{ backgroundColor: item.value }}
             key={item.id}
+            onClick={() => this.attributeValueSelect(id, item.id)}
           ></div>
         );
       });
     }
+  };
+
+  attributeValueSelect = (attrId, itemId) => {
+    if (this.props.product.selectedAttr[attrId] !== itemId) {
+      const attributes = {};
+      attributes[attrId] = itemId;
+      this.props.modifyProductInCart({
+        cartId: this.props.product.cartId,
+        attributes: attributes,
+      });
+    }
+  };
+
+  imageArrowClickHandler = (type) => {
+    const numImages = this.props.product.gallery.length;
+    const currentIdx = this.state.imageIdx;
+    let idx = currentIdx;
+    if (type === "back") {
+      idx = currentIdx - 1;
+      if (idx === -1) {
+        idx = numImages - 1;
+      }
+    } else {
+      idx = currentIdx + 1;
+      if (idx === numImages) {
+        idx = 0;
+      }
+    }
+    this.setState({ ...this.state, imageIdx: idx });
   };
 
   render() {
@@ -129,20 +166,22 @@ class ProductInCart extends React.Component {
           <div>
             <p className={classes.brand}>{this.props.product.brand}</p>
             <p className={classes.name}>{this.props.product.name}</p>
-            <p className={classes.price}>
-              {this.state.currency.symbol}
-              <span>{this.state.totalPrice.toFixed(2)}</span>
-            </p>
           </div>
-          <div className={classes.attributesContainer}>
-            {this.renderAttributes()}
-          </div>
+          <p className={classes.price}>
+            {this.state.currency.symbol}
+            <span>{this.state.totalPrice.toFixed(2)}</span>
+          </p>
+          {this.props.product.attributes.length > 0 && (
+            <div className={classes.attributesContainer}>
+              {this.renderAttributes()}
+            </div>
+          )}
         </div>
         <div className={classes.middleSide}>
           <div
             className={classes.amountIcon}
             onClick={() =>
-              this.props.addOneToProduct({ id: this.props.product.id })
+              this.props.addOneToProduct({ cartId: this.props.product.cartId })
             }
           >
             <IoAdd />
@@ -151,14 +190,35 @@ class ProductInCart extends React.Component {
           <div
             className={classes.amountIcon}
             onClick={() =>
-              this.props.subtractOneFromProduct({ id: this.props.product.id })
+              this.props.subtractOneFromProduct({
+                cartId: this.props.product.cartId,
+              })
             }
           >
             <IoRemoveOutline />
           </div>
         </div>
         <div className={classes.rightSide}>
-          <img src={this.props.product.gallery[0]} alt="product" />
+          {this.props.cartPage && this.props.product.gallery.length > 1 && (
+            <div
+              className={[classes.imgArrow, classes.backArrow].join(" ")}
+              onClick={() => this.imageArrowClickHandler("back")}
+            >
+              <TiChevronLeft />
+            </div>
+          )}
+          <img
+            src={this.props.product.gallery[this.state.imageIdx]}
+            alt="product"
+          />
+          {this.props.cartPage && this.props.product.gallery.length > 1 && (
+            <div
+              className={[classes.imgArrow, classes.forwardArrow].join(" ")}
+              onClick={() => this.imageArrowClickHandler("forward")}
+            >
+              <TiChevronRight />
+            </div>
+          )}
         </div>
       </div>
     );

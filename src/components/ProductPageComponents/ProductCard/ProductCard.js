@@ -1,10 +1,19 @@
 import React from "react";
 import classes from "./ProductCard.module.css";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart, FiCheck } from "react-icons/fi";
 import { CSSTransition } from "react-transition-group";
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import "./transitions.css";
 import { isMobile } from "react-device-detect";
+import { connect } from "react-redux";
+import { addProductToCart } from "../../../features/productsInCartSlice";
+
+import { setProductAddedNotification } from "../../../features/productAddedNotifSlice";
+
+const mapDispatchToProps = {
+  addProductToCart,
+  setProductAddedNotification,
+};
 
 class ProductCard extends React.Component {
   constructor(props) {
@@ -13,8 +22,8 @@ class ProductCard extends React.Component {
       ...this.props.product,
       currency: this.props.currency,
       hovered: false,
+      navigate: false,
     };
-    this.btnRef = React.createRef();
   }
 
   componentDidUpdate(prevProps) {
@@ -41,7 +50,32 @@ class ProductCard extends React.Component {
     }
   };
 
+  btnClickHandler = (e) => {
+    e.stopPropagation();
+    if (this.state.inStock) {
+      const selectedAttr = {};
+      this.state.attributes.forEach((attr) => {
+        selectedAttr[attr.id] = attr.items[0].id;
+      });
+      this.props.addProductToCart({
+        ...this.props.product,
+        selectedAttr: selectedAttr,
+      });
+      this.props.setProductAddedNotification({
+        name: this.state.name,
+        show: true,
+      });
+    }
+  };
+
+  cardClickHandler = () => {
+    this.setState({ ...this.state, navigate: true });
+  };
+
   render() {
+    if (this.state.navigate) {
+      return <Navigate to={`/products/${this.state.id}`} />;
+    }
     return (
       <div
         className={[
@@ -53,6 +87,7 @@ class ProductCard extends React.Component {
         onMouseLeave={() => this.hoverHandler(false)}
         onTouchStart={() => this.touchHandler(true)}
         onTouchEnd={() => this.touchHandler(false)}
+        onClick={this.cardClickHandler}
       >
         <div className={classes.previewImage}>
           <img src={this.state.gallery[0]} alt="Preview" />
@@ -61,21 +96,17 @@ class ProductCard extends React.Component {
               <p>Out of Stock</p>
             </div>
           )}
+        </div>
+        <div className={classes.text}>
           <CSSTransition
             timeout={1000000}
             in={this.state.hovered}
             classNames="hover-transition"
           >
-            <Link
-              to={`/products/${this.state.id}`}
-              className={classes.cartIcon}
-              ref={this.btnRef}
-            >
+            <div className={classes.cartIcon} onClick={this.btnClickHandler}>
               <FiShoppingCart />
-            </Link>
+            </div>
           </CSSTransition>
-        </div>
-        <div className={classes.text}>
           <p className={classes.brand}>{this.state.brand}</p>
           <p className={classes.name}>{this.state.name}</p>
           <p className={classes.price}>
@@ -87,12 +118,9 @@ class ProductCard extends React.Component {
             }
           </p>
         </div>
-        {/* {this.state.addedToCart && (
-          <AddedToCartNotification name={this.state.name} />
-        )} */}
       </div>
     );
   }
 }
 
-export default ProductCard;
+export default connect(null, mapDispatchToProps)(ProductCard);

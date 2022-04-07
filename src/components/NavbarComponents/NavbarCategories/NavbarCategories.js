@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./NavbarCategories.module.css";
 import { connect } from "react-redux";
 import { setSelectedCategory } from "../../../features/categoriesSlice";
+import withRouter from "../../../hoc/withRouter/withRouter";
 import { CSSTransition } from "react-transition-group";
 import "./transitions.css";
 
@@ -46,6 +47,10 @@ class NavbarCategories extends React.Component {
   clickHandler = (category) => {
     this.setState({ ...this.state, selected: category });
     this.props.setSelectedCategory(category);
+    const { pathname } = this.props.location;
+    if (pathname !== "/") {
+      this.props.navigate("/");
+    }
   };
 
   render() {
@@ -75,4 +80,7 @@ class NavbarCategories extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavbarCategories);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(NavbarCategories));

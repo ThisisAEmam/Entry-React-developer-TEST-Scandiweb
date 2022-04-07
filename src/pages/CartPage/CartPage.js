@@ -55,7 +55,7 @@ class CartPage extends React.Component {
                   <ProductInCart
                     cartPage
                     product={product}
-                    key={product.id}
+                    key={product.cartId}
                     setCurrency={this.getCurrency}
                   />
                 ))}
@@ -80,35 +80,6 @@ class CartPage extends React.Component {
               </Link>
             </div>
           )}
-          {/* {this.props.products.length !== 0 ? (
-            <>
-              <div className={classes.products}>
-                {this.props.products.map((product) => (
-                  <ProductInCart
-                    product={product}
-                    key={product.id}
-                    setCurrency={this.getCurrency}
-                  />
-                ))}
-              </div>
-              <div className={classes.totalPrice}>
-                <p>Total</p>
-                <p>
-                  {this.state.currency.symbol}
-                  {this.calcTotalPrice()}
-                </p>
-              </div>
-              <div className={classes.btnsContainer}>
-                <button className={classes.viewBagBtn}>View Bag</button>
-                <button className={classes.checkoutBtn}>Check out</button>
-              </div>
-            </>
-          ) : (
-            <div className={classes.noProducts}>
-              <img src="/images/empty_box.svg" alt="empty" />
-              <p>Your bag is empty.</p>
-            </div>
-          )} */}
         </div>
       </Layout>
     );

@@ -25,7 +25,18 @@ const fetchCategoryProductsQuery = gql`
         name
         inStock
         gallery
+        description
         brand
+        category
+        attributes {
+          id
+          name
+          type
+          items {
+            id
+            value
+          }
+        }
         prices {
           currency {
             label

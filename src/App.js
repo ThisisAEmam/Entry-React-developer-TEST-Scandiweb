@@ -8,6 +8,7 @@ import { fetchCurrencies } from "./features/currenciesSlice";
 import { fetchCategories } from "./features/categoriesSlice";
 import Navbar from "./containers/Navbar/Navbar";
 import CartPage from "./pages/CartPage/CartPage";
+import ProductAddedNotification from "./components/ProductPageComponents/ProductAddedNotification/ProductAddedNotification";
 
 const mapStateToProps = (state) => {
   return {
@@ -37,6 +38,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Navbar />
+        <ProductAddedNotification />
         <Routes>
           <Route exact path="/" element={<ProductsPage />} />
           <Route path="/products/:id" element={<ProductPage />} />

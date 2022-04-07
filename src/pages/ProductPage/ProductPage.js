@@ -4,13 +4,12 @@ import { fetchProductAPI } from "../../graphQL/api";
 import Layout from "../../hoc/Layout/Layout";
 import withRouter from "../../hoc/withRouter/withRouter";
 import classes from "./ProductPage.module.css";
-import {
-  addProductToCart,
-  removeProductFromCart,
-} from "../../features/productsInCartSlice";
-import { Link } from "react-router-dom";
+import { addProductToCart } from "../../features/productsInCartSlice";
+import { setProductAddedNotification } from "../../features/productAddedNotifSlice";
 import ProductGallery from "../../components/ProductPageComponents/ProductGallery/ProductGallery";
 import { isMobile } from "react-device-detect";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
 
 const mapStateToProps = (state) => {
   return {
@@ -21,7 +20,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addProductToCart,
-  removeProductFromCart,
+  setProductAddedNotification,
 };
 
 class ProductPage extends React.Component {
@@ -29,6 +28,7 @@ class ProductPage extends React.Component {
     super(props);
     this.state = {
       product: {},
+      desc: "",
       prices: [],
       price: [],
       images: [],
@@ -56,6 +56,7 @@ class ProductPage extends React.Component {
         this.setState({
           ...this.state,
           product: product,
+          desc: product.description,
           prices: product.prices,
           price: [...price],
           images: product.gallery,
@@ -67,6 +68,7 @@ class ProductPage extends React.Component {
         this.setState({
           ...this.state,
           product: product,
+          desc: product.description,
           prices: product.prices,
           price: [...price],
           images: product.gallery,
@@ -122,14 +124,24 @@ class ProductPage extends React.Component {
   }
 
   attributeSelectHandler = (attrId, itemId) => {
+    const selectedAttr = { ...this.state.selectedAttr };
     const notSelectedAtt = { ...this.state.notSelectedAttr };
-    notSelectedAtt[attrId] = false;
-    const temp = { ...this.state.selectedAttr };
-    temp[attrId] = itemId;
+    if (attrId in selectedAttr) {
+      console.log(attrId);
+      if (selectedAttr[attrId] === itemId) {
+        delete selectedAttr[attrId];
+      } else {
+        notSelectedAtt[attrId] = false;
+        selectedAttr[attrId] = itemId;
+      }
+    } else {
+      notSelectedAtt[attrId] = false;
+      selectedAttr[attrId] = itemId;
+    }
     this.setState({
       ...this.state,
-      selectedAttr: temp,
-      notSelectedAttr: { ...notSelectedAtt },
+      selectedAttr: selectedAttr,
+      notSelectedAttr: notSelectedAtt,
     });
   };
 
@@ -173,33 +185,32 @@ class ProductPage extends React.Component {
     }
   };
 
-  btnClickHandler = (type) => {
-    if (type === "add") {
-      const attrError = [];
-      this.state.product.attributes.forEach((attr) => {
-        if (this.state.selectedAttr[attr.id] === undefined) {
-          attrError.push(attr.id);
-        }
-      });
-      if (attrError.length > 0) {
-        const notSelectedAtt = { ...this.state.notSelectedAttr };
-        attrError.forEach((attr) => {
-          notSelectedAtt[attr] = true;
-        });
-        this.setState({
-          ...this.state,
-          notSelectedAttr: { ...notSelectedAtt },
-        });
-      } else {
-        this.setState({ ...this.state, addedToCart: true });
-        this.props.addProductToCart({
-          ...this.state.product,
-          selectedAttr: this.state.selectedAttr,
-        });
+  addBtnClickHandler = () => {
+    const attrError = [];
+    this.state.product.attributes.forEach((attr) => {
+      if (this.state.selectedAttr[attr.id] === undefined) {
+        attrError.push(attr.id);
       }
-    } else if (type === "remove") {
-      this.setState({ ...this.state, addedToCart: false });
-      this.props.removeProductFromCart({ id: this.state.product.id });
+    });
+    if (attrError.length > 0) {
+      const notSelectedAtt = { ...this.state.notSelectedAttr };
+      attrError.forEach((attr) => {
+        notSelectedAtt[attr] = true;
+      });
+      this.setState({
+        ...this.state,
+        notSelectedAttr: { ...notSelectedAtt },
+      });
+    } else {
+      this.setState({ ...this.state, addedToCart: true });
+      this.props.addProductToCart({
+        ...this.state.product,
+        selectedAttr: this.state.selectedAttr,
+      });
+      this.props.setProductAddedNotification({
+        name: this.state.product.name,
+        show: true,
+      });
     }
   };
 
@@ -258,12 +269,7 @@ class ProductPage extends React.Component {
                 {this.state.price.length > 0 && this.state.price[0].amount}
               </p>
             </div>
-            <div
-              className={[
-                classes.btnContainer,
-                this.state.addedToCart && classes.removeBtnContainer,
-              ].join(" ")}
-            >
+            <div className={classes.btnContainer}>
               {this.state.product.inStock === false ? (
                 <button
                   className={[classes.addToCartBtn, classes.outOfStockBtn].join(
@@ -272,42 +278,18 @@ class ProductPage extends React.Component {
                 >
                   Out Of Stock
                 </button>
-              ) : this.state.addedToCart ? (
-                <>
-                  <button
-                    className={[classes.addToCartBtn, classes.removeBtn].join(
-                      " "
-                    )}
-                    onClick={() => this.btnClickHandler("remove")}
-                  >
-                    Remove
-                  </button>
-                  <Link to="/cart">
-                    <button
-                      className={[
-                        classes.addToCartBtn,
-                        classes.viewCartBtn,
-                      ].join(" ")}
-                    >
-                      View Cart
-                    </button>
-                  </Link>
-                </>
               ) : (
                 <button
                   className={classes.addToCartBtn}
-                  onClick={() => this.btnClickHandler("add")}
+                  onClick={this.addBtnClickHandler}
                 >
                   Add to Cart
                 </button>
               )}
             </div>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: this.state.product.description,
-              }}
-              className={classes.description}
-            ></p>
+            <div className={classes.description}>
+              {parse(DOMPurify.sanitize(this.state.desc))}
+            </div>
           </div>
         </div>
       </Layout>
